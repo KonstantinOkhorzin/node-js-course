@@ -1,18 +1,14 @@
 import express from 'express';
 import cors from 'cors';
 
+import tasksRouter from './routes/api/tasks.js';
+
 const app = express();
 const port = 3000;
 
 app.use(cors());
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
-
-app.get('/tasks', (req, res) => {
-  res.json([]);
-});
+app.use('/api/tasks', tasksRouter);
 
 app.use((req, res) => {
   res.status(404).json({
