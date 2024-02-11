@@ -1,5 +1,6 @@
 import express from 'express';
 import HttpError from '../../helpers/HttpError.js';
+import { addSchema, updateSchema } from '../../schemas/tasks.js';
 import {
   getAllTasks,
   getTaskById,
@@ -36,6 +37,11 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
+    const { error } = addSchema.validate(req.body);
+    if (error) {
+      throw HttpError(400, error.message);
+    }
+
     const { text } = req.body;
     const newTask = await addTask(text);
 
@@ -48,6 +54,11 @@ router.post('/', async (req, res, next) => {
 router.patch('/:id', async (req, res, next) => {
   try {
     const { body } = req;
+    const { error } = updateSchema.validate(body);
+    if (error) {
+      throw HttpError(400, error.message);
+    }
+
     const { id } = req.params;
     const updatedTask = await updateTask(id, body);
 
