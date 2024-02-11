@@ -1,6 +1,5 @@
 import HttpError from '../helpers/HttpError.js';
 import ctrlWrapper from '../helpers/ctrlWrapper.js';
-import { addSchema, updateSchema } from '../schemas/tasks.js';
 import {
   getAllTasks,
   getTaskById,
@@ -26,11 +25,6 @@ const getById = async (req, res) => {
 };
 
 const add = async (req, res) => {
-  const { error } = addSchema.validate(req.body);
-  if (error) {
-    throw HttpError(400, error.message);
-  }
-
   const { text } = req.body;
   const newTask = await addTask(text);
 
@@ -39,11 +33,6 @@ const add = async (req, res) => {
 
 const updateById = async (req, res) => {
   const { body } = req;
-  const { error } = updateSchema.validate(body);
-  if (error) {
-    throw HttpError(400, error.message);
-  }
-
   const { id } = req.params;
   const updatedTask = await updateTask(id, body);
 
