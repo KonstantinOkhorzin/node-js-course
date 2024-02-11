@@ -10,16 +10,16 @@ import {
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
   try {
     const tasks = await getAllTasks();
     res.json(tasks);
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    next(error);
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
     const task = await getTaskById(id);
@@ -30,23 +30,22 @@ router.get('/:id', async (req, res) => {
 
     res.json(task);
   } catch (error) {
-    const { status = 500, message = 'Server error' } = error;
-    res.status(status).json({ message });
+    next(error);
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
   try {
     const { text } = req.body;
     const newTask = await addTask(text);
 
     res.status(201).json(newTask);
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    next(error);
   }
 });
 
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', async (req, res, next) => {
   try {
     const { body } = req;
     const { id } = req.params;
@@ -58,12 +57,11 @@ router.patch('/:id', async (req, res) => {
 
     res.json(updatedTask);
   } catch (error) {
-    const { status = 500, message = 'Server error' } = error;
-    res.status(status).json({ message });
+    next(error);
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
     const deletedTask = await removeTask(id);
@@ -78,8 +76,7 @@ router.delete('/:id', async (req, res) => {
     //or
     //res.status(204).send()
   } catch (error) {
-    const { status = 500, message = 'Server error' } = error;
-    res.status(status).json({ message });
+    next(error);
   }
 });
 

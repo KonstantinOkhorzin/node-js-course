@@ -17,4 +17,10 @@ app.use((req, res) => {
   });
 });
 
+// Error-handling middleware
+app.use((error, req, res, next) => {
+  const { status = 500, message = 'Server error' } = error;
+  res.status(status).json({ message });
+});
+
 export default app;
