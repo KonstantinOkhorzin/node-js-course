@@ -1,4 +1,5 @@
 import express from 'express';
+import HttpError from '../../helpers/HttpError.js';
 import {
   getAllTasks,
   getTaskById,
@@ -24,11 +25,7 @@ router.get('/:id', async (req, res) => {
     const task = await getTaskById(id);
 
     if (!task) {
-      const error = new Error('Not found');
-      error.status = 404;
-      throw error;
-      //or
-      //return res.status(404).json({ message: 'Not found' });
+      throw HttpError(404, 'Not found');
     }
 
     res.json(task);
@@ -56,9 +53,7 @@ router.patch('/:id', async (req, res) => {
     const updatedTask = await updateTask(id, body);
 
     if (!updatedTask) {
-      const error = new Error('Not found');
-      error.status = 404;
-      throw error;
+      throw HttpError(404, 'Not found');
     }
 
     res.json(updatedTask);
@@ -74,9 +69,7 @@ router.delete('/:id', async (req, res) => {
     const deletedTask = await removeTask(id);
 
     if (!deletedTask) {
-      const error = new Error('Not found');
-      error.status = 404;
-      throw error;
+      throw HttpError(404, 'Not found');
     }
 
     res.json(deletedTask);
