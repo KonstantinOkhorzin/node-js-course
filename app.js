@@ -1,10 +1,12 @@
 import express from 'express';
 import cors from 'cors';
+import morgan from 'morgan';
 
 import tasksRouter from './routes/api/tasks.js';
 
 const app = express();
 
+app.use(morgan('dev')); // HTTP request logger middleware
 app.use(cors()); // Middleware for handling cross-origin HTTP requests
 app.use(express.json()); // Middleware to parse incoming JSON data from the request body
 
