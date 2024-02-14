@@ -46,7 +46,18 @@ export const updateTask = async (id, data) => {
   if (index === -1) {
     return null;
   }
-  tasks[index] = {...tasks[index], ...data };
+  tasks[index] = { id, ...data };
+  await fs.writeFile(tasksPath, JSON.stringify(tasks, null, 2));
+  return tasks[index];
+};
+
+export const updateCompletedTask = async (id, data) => {
+  const tasks = await getAllTasks();
+  const index = tasks.findIndex(item => item.id === id);
+  if (index === -1) {
+    return null;
+  }
+  tasks[index] = { ...tasks[index], ...data };
   await fs.writeFile(tasksPath, JSON.stringify(tasks, null, 2));
   return tasks[index];
 };

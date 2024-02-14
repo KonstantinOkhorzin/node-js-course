@@ -5,6 +5,10 @@ export const addSchema = Joi.object({
 });
 
 export const updateSchema = Joi.object({
-  text: Joi.string(),
-  completed: Joi.boolean(),
+  text: Joi.string().required(),
+  completed: Joi.boolean().required(),
+});
+
+export const updateCompletedSchema = Joi.object({
+  completed: Joi.boolean().required(),
 });

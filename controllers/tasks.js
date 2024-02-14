@@ -5,6 +5,7 @@ import {
   getTaskById,
   addTask,
   updateTask,
+  updateCompletedTask,
   removeTask,
 } from '../models/tasks/index.js';
 
@@ -43,6 +44,18 @@ const updateById = async (req, res) => {
   res.json(updatedTask);
 };
 
+const updateCompletedById = async (req, res) => {
+  const { body } = req;
+  const { id } = req.params;
+  const updatedTask = await updateCompletedTask(id, body);
+
+  if (!updatedTask) {
+    throw HttpError(404, 'Not found');
+  }
+
+  res.json(updatedTask);
+};
+
 const deleteById = async (req, res) => {
   const { id } = req.params;
   const deletedTask = await removeTask(id);
@@ -64,4 +77,5 @@ export default {
   add: ctrlWrapper(add),
   updateById: ctrlWrapper(updateById),
   deleteById: ctrlWrapper(deleteById),
+  updateCompletedById: ctrlWrapper(updateCompletedById),
 };
