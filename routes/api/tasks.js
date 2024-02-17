@@ -12,11 +12,7 @@ router.get('/:id', tasksController.getById);
 
 router.post('/', validateBody(addSchema), tasksController.add);
 
-router.patch(
-  '/:id/completed',
-  validateBody(updateCompletedSchema),
-  tasksController.updateCompletedById
-);
+router.patch('/:id/completed', validateBody(updateCompletedSchema), tasksController.updateById);
 
 router.put('/:id', validateBody(updateSchema), tasksController.updateById);
 

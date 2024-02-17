@@ -1,22 +1,15 @@
 import HttpError from '../helpers/HttpError.js';
 import ctrlWrapper from '../helpers/ctrlWrapper.js';
-import {
-  getAllTasks,
-  getTaskById,
-  addTask,
-  updateTask,
-  updateCompletedTask,
-  removeTask,
-} from '../models/tasks/index.js';
+import Task from '../models/task.js';
 
-const getAll = async (req, res) => {
-  const tasks = await getAllTasks();
+const getAll = async (_, res) => {
+  const tasks = await Task.find({}, '-createdAt');
   res.json(tasks);
 };
 
 const getById = async (req, res) => {
   const { id } = req.params;
-  const task = await getTaskById(id);
+  const task = await Task.findById(id);
 
   if (!task) {
     throw HttpError(404, 'Not found');
@@ -26,28 +19,13 @@ const getById = async (req, res) => {
 };
 
 const add = async (req, res) => {
-  const { text } = req.body;
-  const newTask = await addTask(text);
-
+  const newTask = await Task.create(req.body);
   res.status(201).json(newTask);
 };
 
 const updateById = async (req, res) => {
-  const { body } = req;
   const { id } = req.params;
-  const updatedTask = await updateTask(id, body);
-
-  if (!updatedTask) {
-    throw HttpError(404, 'Not found');
-  }
-
-  res.json(updatedTask);
-};
-
-const updateCompletedById = async (req, res) => {
-  const { body } = req;
-  const { id } = req.params;
-  const updatedTask = await updateCompletedTask(id, body);
+  const updatedTask = await Task.findByIdAndUpdate(id, req.body, { new: true });
 
   if (!updatedTask) {
     throw HttpError(404, 'Not found');
@@ -58,7 +36,7 @@ const updateCompletedById = async (req, res) => {
 
 const deleteById = async (req, res) => {
   const { id } = req.params;
-  const deletedTask = await removeTask(id);
+  const deletedTask = await Task.findByIdAndDelete(id);
 
   if (!deletedTask) {
     throw HttpError(404, 'Not found');
@@ -77,5 +55,4 @@ export default {
   add: ctrlWrapper(add),
   updateById: ctrlWrapper(updateById),
   deleteById: ctrlWrapper(deleteById),
-  updateCompletedById: ctrlWrapper(updateCompletedById),
 };
