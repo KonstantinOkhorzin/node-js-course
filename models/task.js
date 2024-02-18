@@ -1,5 +1,7 @@
 import { Schema, model } from 'mongoose';
 
+import handleMongooseError from '../middlewares/handleMongooseError.js';
+
 const taskSchema = new Schema(
   {
     text: {
@@ -13,6 +15,9 @@ const taskSchema = new Schema(
   },
   { versionKey: false, timestamps: true }
 );
+
+// Handling errors for a POST request
+taskSchema.post('save', handleMongooseError);
 
 const Task = model('task', taskSchema);
 
