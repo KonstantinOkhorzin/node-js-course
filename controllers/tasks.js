@@ -12,7 +12,7 @@ const getById = async (req, res) => {
   const task = await Task.findById(id);
 
   if (!task) {
-    throw HttpError(404, 'Not found');
+    throw HttpError(404);
   }
 
   res.json(task);
@@ -28,7 +28,7 @@ const updateById = async (req, res) => {
   const updatedTask = await Task.findByIdAndUpdate(id, req.body, { new: true });
 
   if (!updatedTask) {
-    throw HttpError(404, 'Not found');
+    throw HttpError(404);
   }
 
   res.json(updatedTask);
@@ -39,7 +39,7 @@ const deleteById = async (req, res) => {
   const deletedTask = await Task.findByIdAndDelete(id);
 
   if (!deletedTask) {
-    throw HttpError(404, 'Not found');
+    throw HttpError(404);
   }
 
   res.json(deletedTask);
