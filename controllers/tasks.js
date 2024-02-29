@@ -2,12 +2,12 @@ import HttpError from '../helpers/HttpError.js';
 import ctrlWrapper from '../helpers/ctrlWrapper.js';
 import Task from '../models/task.js';
 
-const getAll = async (_, res) => {
+const getTasks = async (_, res) => {
   const tasks = await Task.find({}, '-createdAt');
   res.json(tasks);
 };
 
-const getById = async (req, res) => {
+const getTaskById = async (req, res) => {
   const { id } = req.params;
   const task = await Task.findById(id);
 
@@ -18,12 +18,12 @@ const getById = async (req, res) => {
   res.json(task);
 };
 
-const add = async (req, res) => {
+const createTask = async (req, res) => {
   const newTask = await Task.create(req.body);
   res.status(201).json(newTask);
 };
 
-const updateById = async (req, res) => {
+const updateTaskById = async (req, res) => {
   const { id } = req.params;
   const updatedTask = await Task.findByIdAndUpdate(id, req.body, { new: true });
 
@@ -34,7 +34,7 @@ const updateById = async (req, res) => {
   res.json(updatedTask);
 };
 
-const deleteById = async (req, res) => {
+const deleteTaskById = async (req, res) => {
   const { id } = req.params;
   const deletedTask = await Task.findByIdAndDelete(id);
 
@@ -50,9 +50,9 @@ const deleteById = async (req, res) => {
 };
 
 export default {
-  getAll: ctrlWrapper(getAll),
-  getById: ctrlWrapper(getById),
-  add: ctrlWrapper(add),
-  updateById: ctrlWrapper(updateById),
-  deleteById: ctrlWrapper(deleteById),
+  getTasks: ctrlWrapper(getTasks),
+  getTaskById: ctrlWrapper(getTaskById),
+  createTask: ctrlWrapper(createTask),
+  updateTaskById: ctrlWrapper(updateTaskById),
+  deleteTaskById: ctrlWrapper(deleteTaskById),
 };

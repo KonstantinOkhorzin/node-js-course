@@ -1,27 +1,27 @@
 import express from 'express';
 
-import tasksController from '../../controllers/tasks.js';
+import tasksControllers from '../../controllers/tasks.js';
 import { addSchema, updateSchema, updateCompletedSchema } from '../../schemas/tasks.js';
 import validateBody from '../../middlewares/validateBody.js';
 import isValidId from '../../middlewares/isValidId.js';
 
 const router = express.Router();
 
-router.get('/', tasksController.getAll);
+router.get('/', tasksControllers.getTasks);
 
-router.get('/:id', isValidId, tasksController.getById);
+router.get('/:id', isValidId, tasksControllers.getTaskById);
 
-router.post('/', validateBody(addSchema), tasksController.add);
+router.post('/', validateBody(addSchema), tasksControllers.createTask);
 
 router.patch(
   '/:id/completed',
   isValidId,
   validateBody(updateCompletedSchema),
-  tasksController.updateById
+  tasksControllers.updateTaskById
 );
 
-router.put('/:id', isValidId, validateBody(updateSchema), tasksController.updateById);
+router.put('/:id', isValidId, validateBody(updateSchema), tasksControllers.updateTaskById);
 
-router.delete('/:id', isValidId, tasksController.deleteById);
+router.delete('/:id', isValidId, tasksControllers.deleteTaskById);
 
 export default router;
