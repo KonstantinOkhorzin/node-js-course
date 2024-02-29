@@ -1,20 +1,7 @@
-import { Schema, model } from 'mongoose';
+import { model } from 'mongoose';
 
-import handleMongooseError from '../middlewares/handleMongooseError.js';
-
-const taskSchema = new Schema(
-  {
-    text: {
-      type: String,
-      required: [true, 'Why no text?'],
-    },
-    completed: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  { versionKey: false, timestamps: true }
-);
+import handleMongooseError from '../helpers/handleMongooseError.js';
+import { taskSchema } from '../schemas/tasks.js';
 
 // Handling errors for a POST request
 taskSchema.post('save', handleMongooseError);
