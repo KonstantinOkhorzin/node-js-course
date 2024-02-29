@@ -2,8 +2,14 @@ import HttpError from '../helpers/HttpError.js';
 import ctrlWrapper from '../helpers/ctrlWrapper.js';
 import Task from '../models/task.js';
 
-const getAll = async (_, res) => {
-  const tasks = await Task.find({}, '-createdAt');
+const getAll = async (req, res) => {
+  const { _id: owner } = req.user;
+  const { page = 1, limit = 10 } = req.query;
+  const skip = (page - 1) * limit;
+  const tasks = await Task.find({ owner }, '-createdAt -updatedAt', { skip, limit }).populate(
+    'owner',
+    'name email'
+  );
   res.json(tasks);
 };
 
@@ -19,7 +25,8 @@ const getById = async (req, res) => {
 };
 
 const add = async (req, res) => {
-  const newTask = await Task.create(req.body);
+  const { _id: owner } = req.user;
+  const newTask = await Task.create({ ...req.body, owner });
   res.status(201).json(newTask);
 };
 
