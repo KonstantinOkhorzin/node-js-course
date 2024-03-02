@@ -3,6 +3,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import * as dotenv from 'dotenv';
 
+import authRouter from './routes/api/auth.js';
 import tasksRouter from './routes/api/tasks.js';
 
 dotenv.config();
@@ -13,6 +14,7 @@ app.use(morgan('dev')); // HTTP request logger middleware
 app.use(cors()); // Middleware for handling cross-origin HTTP requests
 app.use(express.json()); // Middleware to parse incoming JSON data from the request body
 
+app.use('/api/auth', authRouter);
 app.use('/api/tasks', tasksRouter);
 
 // Middleware for handling unmatched routes
