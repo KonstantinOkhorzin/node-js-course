@@ -1,8 +1,8 @@
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 
 import HttpError from '../helpers/HttpError.js';
 import ctrlWrapper from '../helpers/ctrlWrapper.js';
+import createJWToken from '../helpers/createJWToken.js';
 import User from '../models/user.js';
 
 const register = async (req, res) => {
@@ -16,11 +16,7 @@ const register = async (req, res) => {
   const hashPassword = await bcrypt.hash(password, 10);
   const newUser = await User.create({ ...req.body, password: hashPassword });
 
-  const payload = {
-    id: newUser._id,
-  };
-  const { SECRET_KEY } = process.env;
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '7d' });
+  const token = createJWToken(newUser);
 
   await User.findByIdAndUpdate(newUser._id, { token });
 
