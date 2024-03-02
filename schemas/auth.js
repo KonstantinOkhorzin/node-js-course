@@ -21,11 +21,6 @@ export const userSchema = new Schema(
     },
     password: {
       type: String,
-      validate: {
-        validator: validatePassword,
-        message:
-          'Password must contain at least 8 characters including uppercase, lowercase, digit, and special character.',
-      },
       required: true,
     },
     token: {
