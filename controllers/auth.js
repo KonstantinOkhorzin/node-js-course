@@ -29,6 +29,34 @@ const register = async (req, res) => {
   });
 };
 
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw HttpError(401, 'Email or password invalid');
+  }
+
+  const passwordCompare = await bcrypt.compare(password, user.password);
+
+  if (!passwordCompare) {
+    throw HttpError(401, 'Email or password invalid');
+  }
+
+  const token = createJWToken(user);
+
+  await User.findByIdAndUpdate(user._id, { token });
+
+  res.json({
+    user: {
+      email: user.email,
+      name: user.name,
+    },
+    token,
+  });
+};
+
 export default {
   register: ctrlWrapper(register),
+  login: ctrlWrapper(login),
 };
