@@ -4,7 +4,9 @@ import Task from '../models/task.js';
 
 const getTasks = async (req, res) => {
   const { _id: owner } = req.user;
-  const tasks = await Task.find({ owner }, '-owner');
+  const { page = 1, limit = 10 } = req.query;
+  const skip = (page - 1) * limit;
+  const tasks = await Task.find({ owner }, '-owner', { skip, limit });
   res.json(tasks);
 };
 
