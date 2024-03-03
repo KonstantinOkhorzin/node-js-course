@@ -15,4 +15,6 @@ router.post('/login', validateBody(loginSchema), authControllers.login);
 
 router.get('/current', authenticate, authControllers.getCurrent);
 
+router.post('/logout', authenticate, authControllers.logout);
+
 export default router;
