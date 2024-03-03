@@ -2,8 +2,9 @@ import HttpError from '../helpers/HttpError.js';
 import ctrlWrapper from '../helpers/ctrlWrapper.js';
 import Task from '../models/task.js';
 
-const getTasks = async (_, res) => {
-  const tasks = await Task.find({}, '-createdAt');
+const getTasks = async (req, res) => {
+  const { _id: owner } = req.user;
+  const tasks = await Task.find({ owner }, '-owner');
   res.json(tasks);
 };
 
@@ -19,7 +20,8 @@ const getTaskById = async (req, res) => {
 };
 
 const createTask = async (req, res) => {
-  const newTask = await Task.create(req.body);
+  const { _id: owner } = req.user;
+  const newTask = await Task.create({ ...req.body, owner });
   res.status(201).json(newTask);
 };
 
