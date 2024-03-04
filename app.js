@@ -14,7 +14,7 @@ app.use(morgan('dev')); // HTTP request logger middleware
 app.use(cors()); // Middleware for handling cross-origin HTTP requests
 app.use(express.json()); // Middleware to parse incoming JSON data from the request body
 
-app.use('/api/auth', authRouter);
+app.use('/api/users', authRouter);
 app.use('/api/tasks', tasksRouter);
 
 // Middleware for handling unmatched routes
